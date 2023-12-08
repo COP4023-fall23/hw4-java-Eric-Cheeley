@@ -1,55 +1,58 @@
-import java.io.*;
+import java.util.Arrays;
 
 public class Student {
     private String[] studentInfo;
-    private double[] finalGrades;
+    private String[] testGrade;
     private int numStudents;
 
-    // Constructor to initialize the Student object with studentInfo and numStudents
-    public Student(String[] studentInfo, int numStudents) {
+            /*Include here your private members */
+    public Student() {
+        // Default constructor
+    }
+
+            /*Include here your public members */
+    public Student(String[] studentInfo, String[] testGrade) {
         this.studentInfo = studentInfo;
-        this.numStudents = numStudents;
-        this.finalGrades = new double[numStudents];
+        this.testGrade = testGrade;
+        this.numStudents = studentInfo.length; // Assuming studentInfo and testGrade have the same length
     }
 
-    // Parameterized constructor to read student information and test grades from a file
-    public Student(String fileName, int numStudents) {
-        this.numStudents = numStudents;
-        this.studentInfo = new String[numStudents];
-        this.finalGrades = new double[numStudents];
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            int i = 0;
-            while ((line = reader.readLine()) != null && i < numStudents) {
-                String[] parts = line.split(",");
-                if (parts.length >= 2) {
-                    studentInfo[i] = parts[0].trim();
-                    finalGrades[i] = Double.parseDouble(parts[1].trim());
-                    i++;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static void main(String[] args) throws Exception {
+    public void computeFinalGrade(String studentName) {
+        int studentIndex = findStudent(studentName);
+        if (studentIndex != -1) {
+            // Calculate the final grade for the student (you can implement your logic here)
+            System.out.println("Final grade for " + studentName + " is calculated.");
+        } else {
+            System.out.println(studentName + " not found in the list.");
         }
     }
 
-    // Compute final grades based on a provided formula
-    public void computeFinalGrade(String formula) {
+        /*Write here your main code*/
+    public int findStudent(String studentName) {
         for (int i = 0; i < numStudents; i++) {
-            // You need to implement the logic to compute final grades based on the formula
-            // For this example, let's assume the formula is a percentage (e.g., "80%")
-            double percentage = Double.parseDouble(formula.replace("%", "").trim());
-            finalGrades[i] = percentage;
-        }
-    }
-
-    // Find a student by name and return their index
-    public int findStudent(String name) {
-        for (int i = 0; i < numStudents; i++) {
-            if (studentInfo[i].equalsIgnoreCase(name)) {
-                return i;
+            if (studentInfo[i].equals(studentName)) {
+                return i; // Found the student
             }
         }
         return -1; // Student not found
     }
+
+    public static void main(String[] args) {
+        String[] studentNames = {"Ashley", "Greg", "Chris", "David"};
+        String[] testGrades = {"A", "B", "C", "D"};
+        Student studentList = new Student(studentNames, testGrades);
+
+        // Example: Compute final grade for a student
+        studentList.computeFinalGrade("Ashley");
+
+        // Example: Find a student in the list
+        int index = studentList.findStudent("Greg");
+        if (index != -1) {
+            System.out.println("Greg found at index " + index );
+        } else {
+            System.out.println("Greg not found in the list.");
+        }
+    }
+}
